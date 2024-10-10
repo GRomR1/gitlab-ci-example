@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["deb"],
+      "matchPackageNames": ["gcc-11"],
+      "registryUrls": [
+        "https://deb.debian.org/debian?suite=stable&components=main,contrib,non-free&binaryArch=amd64"
+      ]
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^versions.yml$"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*?\\s*depName=(?<depName>.*?)?\\sDEFAULT_OSMAX_CORE_VERSION:\\s(?<currentValue>.*)"
+      ],
+      "datasourceTemplate": "deb"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+variables:
+  # renovate: depName=gcc-11
+  DEFAULT_GCC_VERSION: 11.2.0-19
