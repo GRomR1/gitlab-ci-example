@@ -13,7 +13,16 @@
       "matchStrings": ["(?<currentValue>\\S+)"],
       "depNameTemplate": "k3s",
       "versioningTemplate": "semver-coerced",
-      "datasourceTemplate": "custom.k3s"
+      "datasourceTemplate": "custom.local_generic"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["\\.yml$"],
+      "datasourceTemplate": "custom.local_generic",
+      "matchStrings": [
+        "#\\s*renovate:\\s*(datasource=(?<datasource>.*?) )?depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s*\\w*:\\s*(?<currentValue>.*)\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ],
   "customDatasources": {
@@ -22,6 +31,19 @@
       "transformTemplates": [
         "{\"releases\":[{\"version\": $$.(data[id = 'stable'].latest),\"sourceUrl\":\"https://github.com/k3s-io/k3s\",\"changelogUrl\":$join([\"https://github.com/k3s-io/k3s/releases/tag/\",data[id = 'stable'].latest])}],\"sourceUrl\": \"https://github.com/k3s-io/k3s\",\"homepage\": \"https://k3s.io/\"}"
       ]
+    },
+
+    "local_generic": {
+      "defaultRegistryUrlTemplate": "file://{{packageName}}/versiontracker.json",
+      "transformTemplates": [
+        "{ \"releases\": $map($, function($v) { { \"version\": $v.version } }) }"
+      ]
     }
-  }
+  },
+  "logLevelRemap": [
+    {
+      "matchMessage": "/^Custom manager fetcher/",
+      "newLogLevel": "info"
+    }
+  ]
 }
