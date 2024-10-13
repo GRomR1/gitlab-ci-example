@@ -1,3 +1,5 @@
-variables:
-  # renovate: depName=gcc-11
-  DEFAULT_GCC_VERSION: 11.2.0-19
+# variables:
+#   DEFAULT_GCC_VERSION: 11.2.0-19
+
+# renovate: depName=nomad
+nomad_version: 1.6.0

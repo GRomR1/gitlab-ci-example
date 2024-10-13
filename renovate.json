@@ -1,25 +1,28 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:best-practices"
   ],
-  "packageRules": [
-    {
-      "matchDatasources": ["deb"],
-      "matchPackageNames": ["gcc-11"],
-      "registryUrls": [
-        "https://deb.debian.org/debian?suite=stable&components=main,contrib,non-free&binaryArch=amd64"
-      ]
-    }
+  "enabledManagers": [
+    "regex"
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["^versions.yml$"],
+      "fileMatch": ["\\.yml$"],
+      "datasourceTemplate": "custom.hashicorp",
       "matchStrings": [
-        "#\\s*renovate:\\s*?\\s*depName=(?<depName>.*?)?\\sDEFAULT_OSMAX_CORE_VERSION:\\s(?<currentValue>.*)"
+        "#\\s*renovate:\\s*(datasource=(?<datasource>.*?) )?depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s*\\w*:\\s*(?<currentValue>.*)\\s"
       ],
-      "datasourceTemplate": "deb"
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
-  ]
+  ],
+  "customDatasources": {
+    "hashicorp": {
+      "defaultRegistryUrlTemplate": "https://api.releases.hashicorp.com/v1/releases/{{packageName}}?license_class=oss",
+      "transformTemplates": [
+        "{ \"releases\": $map($, function($v) { { \"version\": $v.version, \"releaseTimestamp\": $v.timestamp_created, \"changelogUrl\": $v.url_changelog, \"sourceUrl\": $v.url_source_repository } }), \"homepage\": $[0].url_project_website, \"sourceUrl\": $[0].url_source_repository }"
+      ]
+    }
+  }
 }
