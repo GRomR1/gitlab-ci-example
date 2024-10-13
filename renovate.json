@@ -4,12 +4,14 @@
     "config:best-practices"
   ],
   "enabledManagers": [
-    "regex"
+    "custom.regex"
   ],
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": ["\\.yml$"],
+      "fileMatch": [
+        "\\.yml$"
+      ],
       "datasourceTemplate": "custom.hashicorp",
       "matchStrings": [
         "#\\s*renovate:\\s*(datasource=(?<datasource>.*?) )?depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s*\\w*:\\s*(?<currentValue>.*)\\s"
