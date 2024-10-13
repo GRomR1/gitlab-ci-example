@@ -2,4 +2,4 @@
 #   DEFAULT_GCC_VERSION: 11.2.0-19
 
 # renovate: depName=nomad
-nomad_version: 1.6.0
+nomad_version: 1.7.1
